@@ -1,0 +1,81 @@
+type Query {
+  allProjects: [Project!]!
+  projectCount: Int!
+  allWorks: [Work!]!
+  workCount: Int!
+  project(id: ID!): Project
+}
+
+"""
+test
+"""
+type Mutation {
+  createTask(in: CreateTaskInput!): Task
+  addActivity(taskId: ID!, in: AddActivityInput!): Activity!
+  updateActivity(in: UpdateActivityInput!): Activity!
+  deleteActivity(activityId: ID!): Activity!
+}
+
+input CreateTaskInput {
+  projectId: ID!
+  workId: ID!
+  estimate: Datetime!
+}
+
+input AddActivityInput {
+  startedAt: Datetime!
+  finishedAt: Datetime
+}
+
+input UpdateActivityInput {
+  id: ID!
+  startedAt: Datetime!
+  finishedAt: Datetime
+}
+
+type Project {
+  id: ID!
+  name: String!
+  projectType: ProjectType
+}
+
+enum ProjectType {
+  DEVELOPERS
+  TECH_CLUB
+  T_PAS
+  INTERNAL_T_PAS
+  OTHER
+}
+
+type Work {
+  id: ID!
+  name: String!
+  workType: WorkType
+}
+
+enum WorkType {
+  CODING_DESIGNS
+  MTG
+  OTHER
+  SUPPORT
+  OPERATIONS
+}
+
+type Task {
+  id: ID!
+  project: Project
+  work: Work
+  estimate: Int!
+  activities: [Activity!]!
+}
+
+type Activity {
+  id: ID!
+  startedAt: Datetime!
+  finishedAt: Datetime
+}
+
+scalar Datetime
+schema {
+  query: Query
+}
